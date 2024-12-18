@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- Background -->
+  <rect width="600" height="400" fill="#f0f0f0"/>
+  
+  <!-- Title -->
+  <text x="300" y="50" text-anchor="middle" font-size="24" font-weight="bold">
+    LangChain Architecture
+  </text>
+  
+  <!-- Content -->
+  <rect x="100" y="100" width="400" height="200" fill="#FF9800" rx="10"/>
+  <text x="300" y="200" text-anchor="middle" fill="white" font-size="16">
+    LangChain Components
+  </text>
+</svg>
