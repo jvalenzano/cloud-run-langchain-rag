@@ -31,7 +31,7 @@ venv.bak/
 
 # IDE
 .idea/
-.vscode/
+# .vscode/   # Commented out so we can track workspace settings
 *.swp
 *.swo
 
