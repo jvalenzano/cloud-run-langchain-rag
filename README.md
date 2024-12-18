@@ -41,6 +41,49 @@ cloud-run-rag-tutorial/
 - LangChain CLI
 - Poetry
 
+# Cloud Run LangChain RAG Application
+
+A Retrieval Augmented Generation (RAG) application using LangChain and Google Cloud Run to answer questions about Cloud Run release notes. The application uses Gemini AI with a PostgreSQL vector database to provide accurate, context-aware responses.
+
+## Overview
+
+This application allows users to:
+- Ask questions about Cloud Run features and capabilities
+- Get responses grounded in actual Cloud Run release notes
+- Access information through a REST API or web interface
+
+![RAG Workflow](/images/rag-workflow.svg)
+![Cloud SQL Setup](/images/cloud-sql-setup.png)
+![LangChain Architecture](/images/langchain-architecture.png)
+
+## 🚀 Project Structure
+
+```
+cloud-run-rag-tutorial/
+│
+├── images/                  # Project diagrams and screenshots
+│   ├── rag-workflow.svg
+│   ├── cloud-sql-setup.png
+│   ├── langchain-architecture.png
+│
+├── README.md                # Main project documentation
+├── code/                    # Source code
+│   ├── indexer.py           # Data indexing script
+│   ├── server.py            # LangChain application server
+│
+├── docs/                    # Detailed documentation
+│   ├── SETUP.md             # Installation and setup guide
+│   ├── DEPLOYMENT.md        # Deployment instructions
+```
+
+## 📋 Prerequisites
+
+- Google Cloud account
+- Python 3.11+
+- Google Cloud SDK
+- LangChain CLI
+- Poetry
+
 ## 🔧 Key Components
 
 ### 1. Vector Database
@@ -88,10 +131,6 @@ cloud-run-rag-tutorial/
 4. Push to the branch
 5. Create a Pull Request
 
-## 📄 License
-
-[Specify your license - MIT/Apache/etc]
-
 ## 🌟 Acknowledgments
 
 - Google Cloud
@@ -101,3 +140,4 @@ cloud-run-rag-tutorial/
 ## 📞 Support
 
 For issues or questions, please open a GitHub issue or contact [your contact information]
+
