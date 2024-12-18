@@ -1,79 +1,130 @@
-# run-ragged
+# Cloud Run LangChain RAG Application
 
-## Installation
+A Retrieval Augmented Generation (RAG) application using LangChain and Cloud Run to answer questions about Cloud Run release notes. The application uses Gemini AI with a PostgreSQL vector database to provide accurate, context-aware responses.
 
-Install the LangChain CLI if you haven't yet
+## Overview
 
+This application allows users to:
+- Ask questions about Cloud Run features and capabilities
+- Get responses grounded in actual Cloud Run release notes
+- Access information through a REST API or web interface
+
+## Prerequisites
+
+- Google Cloud Project with enabled APIs
+- Python 3.11 or higher
+- Google Cloud CLI (gcloud)
+- PostgreSQL on Cloud SQL
+- Poetry for dependency management
+- LangChain CLI
+
+## Setup
+
+1. Clone the repository
 ```bash
-pip install -U langchain-cli
+git clone https://github.com/jvalenzano/cloud-run-langchain-rag.git
+cd cloud-run-langchain-rag
 ```
 
-## Adding packages
-
+2. Set up Google Cloud Project
 ```bash
-# adding packages from 
-# https://github.com/langchain-ai/langchain/tree/master/templates
-langchain app add $PROJECT_NAME
-
-# adding custom GitHub repo packages
-langchain app add --repo $OWNER/$REPO
-# or with whole git string (supports other git providers):
-# langchain app add git+https://github.com/hwchase17/chain-of-verification
-
-# with a custom api mount point (defaults to `/{package_name}`)
-langchain app add $PROJECT_NAME --api_path=/my/custom/path/rag
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
 ```
 
-Note: you remove packages by their api path
-
+3. Enable required APIs
 ```bash
-langchain app remove my/custom/path/rag
+gcloud services enable \
+    bigquery.googleapis.com \
+    sqladmin.googleapis.com \
+    aiplatform.googleapis.com \
+    cloudresourcemanager.googleapis.com \
+    artifactregistry.googleapis.com \
+    cloudbuild.googleapis.com \
+    run.googleapis.com \
+    secretmanager.googleapis.com
 ```
 
-## Setup LangSmith (Optional)
-LangSmith will help us trace, monitor and debug LangChain applications. 
-You can sign up for LangSmith [here](https://smith.langchain.com/). 
-If you don't have access, you can skip this section
-
-
-```shell
-export LANGCHAIN_TRACING_V2=true
-export LANGCHAIN_API_KEY=<your-api-key>
-export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "default"
+4. Create Cloud SQL instance
+```bash
+export REGION=us-central1
+gcloud sql instances create sql-instance \
+    --database-version POSTGRES_14 \
+    --tier db-f1-micro \
+    --region $REGION
 ```
 
-## Launch LangServe
+5. Install dependencies
+```bash
+poetry install
+```
 
+## Development
+
+1. Set up local environment:
+```bash
+# Set environment variables
+export DB_INSTANCE_NAME=$(gcloud sql instances describe sql-instance --format="value(connectionName)")
+export DB_USER=app
+export DB_NAME=release-notes
+export DB_PASS=your_password
+```
+
+2. Run the indexing job to populate the database:
+```bash
+python app/indexer.py
+```
+
+3. Start the local development server:
 ```bash
 langchain serve
 ```
 
-## Running in Docker
+## Deployment
 
-This project folder includes a Dockerfile that allows you to easily build and host your LangServe app.
-
-### Building the Image
-
-To build the image, you simply:
-
-```shell
-docker build . -t my-langserve-app
+1. Deploy the indexing job:
+```bash
+gcloud run jobs deploy indexer \
+    --source . \
+    --command python \
+    --args app/indexer.py \
+    --set-env-vars=DB_INSTANCE_NAME=$DB_INSTANCE_NAME \
+    --set-env-vars=DB_USER=app \
+    --set-env-vars=DB_NAME=release-notes \
+    --set-env-vars=DB_PASS=your_password \
+    --region=$REGION \
+    --execute-now
 ```
 
-If you tag your image with something other than `my-langserve-app`,
-note it for use in the next step.
-
-### Running the Image Locally
-
-To run the image, you'll need to include any environment variables
-necessary for your application.
-
-In the below example, we inject the `OPENAI_API_KEY` environment
-variable with the value set in my local environment
-(`$OPENAI_API_KEY`)
-
-We also expose port 8080 with the `-p 8080:8080` option.
-
-```shell
-docker run -e OPENAI_API_KEY=$OPENAI_API_KEY -p 8080:8080 my-langserve-app
+2. Deploy the web application:
+```bash
+gcloud run deploy run-rag \
+    --source . \
+    --set-env-vars=DB_INSTANCE_NAME=$DB_INSTANCE_NAME \
+    --set-env-vars=DB_USER=app \
+    --set-env-vars=DB_NAME=release-notes \
+    --set-env-vars=DB_PASS=your_password \
+    --region=$REGION \
+    --allow-unauthenticated
 ```
+
+## Usage
+
+1. Access the web interface at the deployed Cloud Run URL: `/playground`
+
+2. Example questions you can ask:
+   - "Can I mount a Cloud Storage bucket as a volume in Cloud Run?"
+   - "What are the latest features in Cloud Run?"
+   - "When did Cloud Run add support for Cloud Storage mounts?"
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
