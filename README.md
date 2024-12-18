@@ -9,29 +9,9 @@ This application allows users to:
 - Get responses grounded in actual Cloud Run release notes
 - Access information through a REST API or web interface
 
-![RAG Workflow](/images/rag-workflow.svg)
-![Cloud SQL Setup](/images/cloud-sql-setup.png)
-![LangChain Architecture](/images/langchain-architecture.png)
-
-## 🚀 Project Structure
-
-```
-cloud-run-rag-tutorial/
-│
-├── images/                  # Project diagrams and screenshots
-│   ├── rag-workflow.svg
-│   ├── cloud-sql-setup.png
-│   ├── langchain-architecture.png
-│
-├── README.md                # Main project documentation
-├── code/                    # Source code
-│   ├── indexer.py           # Data indexing script
-│   ├── server.py            # LangChain application server
-│
-├── docs/                    # Detailed documentation
-│   ├── SETUP.md             # Installation and setup guide
-│   ├── DEPLOYMENT.md        # Deployment instructions
-```
+![RAG Workflow](run-ragged/images/rag-workflow-diagram.svg)
+![Cloud SQL Setup](run-ragged/images/cloud-sql-setup.png)
+![LangChain Architecture](run-ragged/images/langchain-architecture.png)
 
 ## 📋 Prerequisites
 
@@ -52,9 +32,14 @@ This application allows users to:
 - Get responses grounded in actual Cloud Run release notes
 - Access information through a REST API or web interface
 
-![RAG Workflow](https://github.com/jvalenzano/cloud-run-langchain-rag/blob/main/run-ragged/images/rag-workflow-diagram.svg)
-![Cloud SQL Setup](https://github.com/jvalenzano/cloud-run-langchain-rag/blob/main/run-ragged/images/cloud-sql-setup.png)
-![LangChain Architecture](https://github.com/jvalenzano/cloud-run-langchain-rag/blob/main/run-ragged/images/langchain-architecture.png)
+# RAG Workflow Diagram
+base64 -w0 run-ragged/images/rag-workflow-diagram.svg
+
+# Cloud SQL Setup
+base64 -w0 run-ragged/images/cloud-sql-setup.png
+
+# LangChain Architecture
+base64 -w0 run-ragged/images/langchain-architecture.png
 
 ## 🚀 Project Structure
 
