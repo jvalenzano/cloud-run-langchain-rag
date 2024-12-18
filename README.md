@@ -9,9 +9,9 @@ This application allows users to:
 - Get responses grounded in actual Cloud Run release notes
 - Access information through a REST API or web interface
 
-![RAG Workflow](run-ragged/images/rag-workflow-diagram.svg)
-![Cloud SQL Setup](run-ragged/images/cloud-sql-setup.png)
-![LangChain Architecture](run-ragged/images/langchain-architecture.png)
+![RAG Workflow](images/rag-workflow-diagram.svg)
+![Cloud SQL Setup](images/cloud-sql-setup.png)
+![LangChain Architecture](images/langchain-architecture.png)
 
 ## 📋 Prerequisites
 
